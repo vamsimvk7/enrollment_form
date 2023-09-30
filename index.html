@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Enrollment Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+
+    .form-container {
+      flex: 1;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="url"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      margin-bottom: 20px;
+    }
+
+    .radio-group label {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    .checkbox-group label {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    input[type="submit"],
+    input[type="reset"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+
+    input[type="submit"]:hover,
+    input[type="reset"]:hover {
+      background-color: #0056b3;
+    }
+
+    .id-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .id-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .id-card .description {
+      margin-bottom: 10px;
+    }
+
+    .id-card .image {
+      text-align: center;
+    }
+
+    .id-card img {
+      width: 100px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .id-card h3 {
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .id-card p {
+      color: #555;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Enrollment Form</h2>
+
+  <div class="container">
+    <!-- Enrollment Form -->
+    <div class="form-container">
+      <form id="enrollmentForm" onsubmit="event.preventDefault(); enrollStudent()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" required>
+
+        <label for="imageLink">Image Link:</label>
+        <input type="url" id="imageLink" required>
+
+        <label>Gender:</label>
+        <div class="radio-group">
+          <label><input type="radio" id="male" name="gender" value="male"> Male</label>
+          <label><input type="radio" id="female" name="gender" value="female"> Female</label>
+        </div>
+
+        <label>Skills:</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="java" name="skills" value="Java"> Java</label>
+          <label><input type="checkbox" id="html" name="skills" value="HTML"> HTML</label>
+          <label><input type="checkbox" id="css" name="skills" value="CSS"> CSS</label>
+        </div>
+
+        <input type="submit" value="Enroll Student">
+        <input type="reset" value="Clear">
+      </form>
+    </div>
+
+    <!-- Enrolled Students ID Cards -->
+    <div class="output-container">
+      <h2>Enrolled Students</h2>
+      <div id="enrolledStudents"></div>
+    </div>
+  </div>
+
+  <script>
+     function enrollStudent() {
+      // Get form values
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var website = document.getElementById("website").value;
+      var imageLink = document.getElementById("imageLink").value;
+      var gender = document.querySelector('input[name="gender"]:checked').value;
+      var skills = Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(skill => skill.value);
+
+      // Create ID card for the enrolled student
+      var idCard = document.createElement("div");
+      idCard.className = "id-card";
+
+      var description = document.createElement("div");
+      description.className = "description";
+
+      var studentName = document.createElement("h3");
+      studentName.textContent = name;
+
+      var studentEmail = document.createElement("p");
+      studentEmail.textContent = email;
+
+      var studentWebsite = document.createElement("p");
+      studentWebsite.innerHTML = '<a href="' + website + '" target="_blank">' + website + '</a>';
+
+      var studentGender = document.createElement("p");
+      studentGender.textContent = "Gender: " + gender;
+
+      var studentSkills = document.createElement("p");
+      studentSkills.textContent = "Skills: " + skills.join(", ");
+
+      description.appendChild(studentName);
+      description.appendChild(studentEmail);
+      description.appendChild(studentWebsite);
+      description.appendChild(studentGender);
+      description.appendChild(studentSkills);
+
+      var image = document.createElement("div");
+      image.className = "image";
+      var studentImage = document.createElement("img");
+      studentImage.src = imageLink;
+      studentImage.alt = "Student Image";
+
+      image.appendChild(studentImage);
+
+      idCard.appendChild(description);
+      idCard.appendChild(image);
+
+      document.getElementById("enrolledStudents").appendChild(idCard);
+
+      // Clear the form fields after enrollment
+      document.getElementById("enrollmentForm").reset();
+    }
+  </script>
+</body>
+</html>
